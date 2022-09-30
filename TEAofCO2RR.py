@@ -1,3 +1,5 @@
+import numpy as np
+import pandas as pd
 # CellArea_electrode = 1/10000
 CurrentperArea_electrode = 0.3*10000 # A/m^2
 Cell_voltaic = 2
@@ -69,5 +71,11 @@ GrossProfit = Income_productCath - OpEx_CO2 - OpEx_H2O - OpEx_distill - OpEx_ele
 
 Income_tax = 0.389
 InterestRate = 0.1
+CapEx_workingRatio = 0.05
+SalvageValue = 0.2
+DepreciationNum = pd.Series([10, 18, 14.4, 11.52, 9.22, 7.37, 6.55, 6.55, 6.56, 6.55, 3.28])
+NPVChart = pd.DataFrame({'Year':range(0, 21), 'Net Profit':[0] + [GrossProfit for _ in range(20)]})
 
-print(CapEx_total)
+CashFlow_discounted = [CapEx_total * (1 + CapEx_workingRatio)]
+
+print(NPVChart)
