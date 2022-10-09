@@ -44,8 +44,6 @@ OnePassCO2Eff = 0.5
 TotalPassCO2Eff = 0.5
 TotalPassFlowRatio_productCath = 0.1
 
-# FlowRate_productCath = CurrentperArea_electrode * CellArea_electrode * FaradayEff / (NumElectron_productCath*FaradayConstant) * MW_productCath / Density_productCath
-# OnepassRatio_productCath = FlowRate_productCath / FlowRate_electrolyteCath
 
 ScaleMassRate_productCath = 100000/24/3600 # kg/s
 Scale_current = ScaleMassRate_productCath / MW_productCath * NumElectron_productCath * FaradayConstant / FaradayEff
@@ -54,8 +52,6 @@ Scale_area = Scale_current / CurrentperArea_electrode # m^2
 ScaleMassRate_inCO2 = ScaleMassRate_productCath / MW_productCath * PptChart.loc[Product_cathode].at['MoleRatiotoCO2'] * MW_CO2 / (1 - TotalPassCO2Eff) # kg/s
 ScaleMassRate_H2O = Scale_current / (NumElectron_H2O * FaradayConstant) * MW_H2O # kg/s
 ScaleMassRate_byproductCath = Scale_current * (1 - FaradayEff) / (NumElectron_byproductCath * FaradayConstant) * MW_byproductCath # kg/s
-# ScaleFlowRate_electrolyteCath = ScaleMassRate_productCath / Density_productCath / TotalPassFlowRatio_productCath # m^3/s
-# ScaleFlowRate_gasCath = ScaleMassRate_inCO2 * TotalPassCO2Eff / Density_CO2 + ScaleMassRate_byproductCath / Density_byproductCath # m^3/s
 
 if Phase_productCath == 'Gas':
     ScaleFlowRate_productGas = ScaleMassRate_inCO2 * TotalPassCO2Eff / Density_CO2 + ScaleMassRate_byproductCath / Density_byproductCath + ScaleMassRate_productCath / Density_productCath
