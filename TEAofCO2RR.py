@@ -152,13 +152,13 @@ def OpCost_yield():
     for products in ['EtOH', 'HCOOH', 'MeOH', 'PrOH', 'CO', 'C2H4', 'CH4']:
         _, _, OpCost = NPVCal('Optimistic', products)
         yield OpCost
-OpEx_df = pd.concat(OpCost_yield(), axis=1, keys=['EtOH', 'HCOOH', 'MeOH', 'PrOH', 'CO', 'C2H4', 'CH4'])
+OpEx_df = pd.concat(OpCost_yield(), axis=1, keys=['Ethanol', 'Formic Acid', 'Methanol', 'n-Propanol', 'Carbon Monoxide', 'Ethylene', 'Methane'])
 
 def CapCost_yield():
     for products in ['EtOH', 'HCOOH', 'MeOH', 'PrOH', 'CO', 'C2H4', 'CH4']:
         _, CapCost, _ = NPVCal('Optimistic', products)
         yield CapCost
-CapEx_df = pd.concat(CapCost_yield(), axis=1, keys=['EtOH', 'HCOOH', 'MeOH', 'PrOH', 'CO', 'C2H4', 'CH4'])
+CapEx_df = pd.concat(CapCost_yield(), axis=1, keys=['Ethanol', 'Formic Acid', 'Methanol', 'n-Propanol', 'Carbon Monoxide', 'Ethylene', 'Methane'])
 
 NPV_dic = {}
 def NPV_yield():
@@ -169,5 +169,6 @@ def NPV_yield():
         NPV_Series = pd.Series(NPV_dic)
         yield NPV_Series
 NPV_df = pd.concat(NPV_yield(), axis=1, keys=['Current', 'Optimistic', 'Better', 'Worse'])
+NPV_df.index = ['Ethanol', 'Formic Acid', 'Methanol', 'n-Propanol', 'Carbon Monoxide', 'Ethylene', 'Methane']
 
-print(NPV_df)
+# print(NPV_df)

@@ -193,15 +193,20 @@ NPV_fig.add_trace(go.Bar(x = NPV_df['Current'], y = NPV_df.index,
 NPV_fig.update_xaxes(title_text="Profit/$")
 NPV_fig.update_yaxes(title_text="CO2RR Products")
 
-NPV_fig.show()
-OpEx_fig = px.bar(OpEx_df.T, x = OpEx_df.columns, y = OpEx_df.index, title="Operation Expenses for CO2RR Products")
-OpEx_fig.update_xaxes(title_text="CO2RR Products")
-OpEx_fig.update_yaxes(title_text="Operation Expenses/$")
+# NPV_fig.show()
+
+OpEx_fig = px.bar(
+    OpEx_df.T, x = OpEx_df.T.index, y = OpEx_df.T.columns, 
+    title="Operation Expenses for CO2RR Products", 
+    labels={"index":"CO2RR Products", "value":"Operation Expenses/$", "variable":"Expenses"}
+    )
 
 # OpEx_fig.show()
 
-CapEx_fig = px.bar(CapEx_df.T, x = CapEx_df.T.index, y = CapEx_df.T.columns, title = "Capital Expenses for CO2RR Products",)
-CapEx_fig.update_xaxes(title_text="CO2RR Products")
-CapEx_fig.update_yaxes(title_text="Capital Expenses/$")
+CapEx_fig = px.bar(
+    CapEx_df.T, x = CapEx_df.T.index, y = CapEx_df.T.columns, 
+    title = "Capital Expenses for CO2RR Products",
+    labels={"index":"CO2RR Products", "value":"Capital Expenses/$", "variable":"Expenses"}
+    )
 
 # CapEx_fig.show()
