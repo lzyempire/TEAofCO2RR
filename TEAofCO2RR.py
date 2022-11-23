@@ -148,14 +148,6 @@ def NPVCal(Case = 'Optimistic', Product_cathode = 'EtOH'):
 
     return NPVChart['CumCash_PV'].iloc[-1], CapEx_Cost, OpEx_Cost
 
-# for cases in ['Current', 'Optimistic', 'Better', 'Worse']:
-#     for products in ['EtOH', 'HCOOH', 'MeOH', 'PrOH', 'CO', 'C2H4', 'CH4']:
-#         NPV_Value, CapCost, OpCost = NPVCal(cases, products)
-#         NPV_dic[products] = NPV_Value
-#     NPV_list = list.append(NPV_dic)
-#     # NPV_df = pd
-# print(NPV_list)
-
 def OpCost_yield():
     for products in ['EtOH', 'HCOOH', 'MeOH', 'PrOH', 'CO', 'C2H4', 'CH4']:
         _, _, OpCost = NPVCal('Optimistic', products)
