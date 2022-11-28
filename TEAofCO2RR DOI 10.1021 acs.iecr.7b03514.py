@@ -54,26 +54,26 @@ def NPVCal(Case = 'Optimistic', Product_cathode = 'EtOH'):
         index=['EtOH', 'HCOOH', 'MeOH', 'PrOH', 'CO', 'C2H4', 'CH4']
     )
     # CellArea_electrode = 1/10000
-    CurrentperArea_electrode = CaseChart.loc['CurrentDensity'].at[Case]*10000/1000 # A/m^2
+    CurrentperArea_electrode = CaseChart.loc['CurrentDensity', Case]*10000/1000 # A/m^2
     FaradayConstant = 96480 # C/mol
     Byproduct_cathode = 'H2'
-    Cell_voltage = 0.454 + PptChart.loc[Product_cathode].at['Voltage'] + CaseChart.loc['CellVoltage'].at[Case] - 2
-    Phase_productCath = PptChart.loc[Product_cathode].at['Phase']
-    Phase_byproductCath = PptChart.loc[Byproduct_cathode].at['Phase']
-    MW_productCath = PptChart.loc[Product_cathode].at['MW']/1000 # kg/mol
-    MW_CO2 = PptChart.loc['CO2'].at['MW']/1000 # kg/mol
-    MW_H2O = PptChart.loc['H2O'].at['MW']/1000
-    MW_byproductCath = PptChart.loc[Byproduct_cathode].at['MW']/1000 # kg/mol
-    Density_productCath = PptChart.loc[Product_cathode].at['Density'] # kg/m^3
-    Density_byproductCath = PptChart.loc[Byproduct_cathode].at['Density'] # kg/m^3
-    Density_CO2 = PptChart.loc['CO2'].at['Density'] # kg/m^3
-    NumElectron_productCath = PptChart.loc[Product_cathode].at['NumElectron']
-    NumElectron_byproductCath = PptChart.loc[Byproduct_cathode].at['NumElectron']
-    NumElectron_CO2 = PptChart.loc['CO2'].at['NumElectron']
-    NumElectron_H2O = PptChart.loc['H2O'].at['NumElectron']
-    FaradayEff = CaseChart.loc['Selectivity'].at[Case] / 100
+    Cell_voltage = 0.454 + PptChart.loc[Product_cathode, 'Voltage'] + CaseChart.loc['CellVoltage', Case] - 2
+    Phase_productCath = PptChart.loc[Product_cathode, 'Phase']
+    Phase_byproductCath = PptChart.loc[Byproduct_cathode,'Phase']
+    MW_productCath = PptChart.loc[Product_cathode,'MW']/1000 # kg/mol
+    MW_CO2 = PptChart.loc['CO2','MW']/1000 # kg/mol
+    MW_H2O = PptChart.loc['H2O','MW']/1000
+    MW_byproductCath = PptChart.loc[Byproduct_cathode,'MW']/1000 # kg/mol
+    Density_productCath = PptChart.loc[Product_cathode,'Density'] # kg/m^3
+    Density_byproductCath = PptChart.loc[Byproduct_cathode,'Density'] # kg/m^3
+    Density_CO2 = PptChart.loc['CO2','Density'] # kg/m^3
+    NumElectron_productCath = PptChart.loc[Product_cathode,'NumElectron']
+    NumElectron_byproductCath = PptChart.loc[Byproduct_cathode, 'NumElectron']
+    NumElectron_CO2 = PptChart.loc['CO2', 'NumElectron']
+    NumElectron_H2O = PptChart.loc['H2O', 'NumElectron']
+    FaradayEff = CaseChart.loc['Selectivity', Case] / 100
     # OnePassCO2Eff = 0.5
-    TotalPassCO2Eff = CaseChart.loc['Conversion'].at[Case] / 100
+    TotalPassCO2Eff = CaseChart.loc['Conversion', Case] / 100
     TotalPassFlowRatio_productCath = 0.1
 
     # FlowRate_productCath = CurrentperArea_electrode * CellArea_electrode * FaradayEff / (NumElectron_productCath*FaradayConstant) * MW_productCath / Density_productCath
@@ -83,7 +83,7 @@ def NPVCal(Case = 'Optimistic', Product_cathode = 'EtOH'):
     Scale_current = ScaleMassRate_productCath / MW_productCath * NumElectron_productCath * FaradayConstant / FaradayEff
     Scale_power = Scale_current * Cell_voltage
     Scale_area = Scale_current / CurrentperArea_electrode # m^2
-    ScaleMassRate_inCO2 = ScaleMassRate_productCath / MW_productCath * PptChart.loc[Product_cathode].at['MoleRatiotoCO2'] * MW_CO2 / (1 - TotalPassCO2Eff) # kg/s
+    ScaleMassRate_inCO2 = ScaleMassRate_productCath / MW_productCath * PptChart.loc[Product_cathode, 'MoleRatiotoCO2'] * MW_CO2 / (1 - TotalPassCO2Eff) # kg/s
     ScaleMassRate_H2O = Scale_current / (NumElectron_H2O * FaradayConstant) * MW_H2O # kg/s
     ScaleMassRate_byproductCath = Scale_current * (1 - FaradayEff) / (NumElectron_byproductCath * FaradayConstant) * MW_byproductCath # kg/s
     # ScaleFlowRate_electrolyteCath = ScaleMassRate_productCath / Density_productCath / TotalPassFlowRatio_productCath # m^3/s
@@ -100,23 +100,23 @@ def NPVCal(Case = 'Optimistic', Product_cathode = 'EtOH'):
 
     # InstallFactor = 1.2
     # CapExperArea_electrolyzer = 250.25/1000*0.175*10000*1.75 * InstallFactor # DOE H2A, $/m^2
-    CapExperArea_electrolyzer = CaseChart.loc['ElectrolyzerCost'].at[Case]
+    CapExperArea_electrolyzer = CaseChart.loc['ElectrolyzerCost', Case]
     CapEx_electrolyzer = CapExperArea_electrolyzer * Scale_area # $
     CapExRatio_BoP = 0.35
     CapEx_BoP = CapEx_electrolyzer * CapExRatio_BoP / (1 - CapExRatio_BoP)
-    CapEx_distill = PriceChart.loc[Product_cathode].at['RefCapCost'] * (ScaleFlowRate_productLiquid / (1/60) ) ** 0.7 # $
+    CapEx_distill = PriceChart.loc[Product_cathode, 'RefCapCost'] * (ScaleFlowRate_productLiquid / (1/60) ) ** 0.7 # $
     CapEx_PSA = 1989043 * (ScaleFlowRate_productGas / (1000/3600)) ** 0.7 # $
     CapEx_total = CapEx_electrolyzer + CapEx_distill + CapEx_BoP + CapEx_PSA
     CapEx_Cost = pd.Series([CapEx_electrolyzer, CapEx_BoP, CapEx_distill, CapEx_PSA], index=['Electrolyzer', 'BoP', 'Distillation', 'PSA'])
 
-    ElectricityPrice = CaseChart.loc['ElectricityPrice'].at[Case] # $/kWh
-    CO2Price = PptChart.loc['CO2'].at['Price'] + (CaseChart.loc['CO2Price'].at[Case] - 40)/1000 # $/kg
-    H2OPrice = PptChart.loc['H2O'].at['Price'] # $/L(kg)
-    ProductCathPrice = PptChart.loc[Product_cathode].at['Price'] * CaseChart.loc['SellPriceRate'].at[Case]
+    ElectricityPrice = CaseChart.loc['ElectricityPrice', Case] # $/kWh
+    CO2Price = PptChart.loc['CO2', 'Price'] + (CaseChart.loc['CO2Price', Case] - 40)/1000 # $/kg
+    H2OPrice = PptChart.loc['H2O', 'Price'] # $/L(kg)
+    ProductCathPrice = PptChart.loc[Product_cathode, 'Price'] * CaseChart.loc['SellPriceRate', Case]
     AnnualWorkDays = 350
     OpEx_electric = Scale_power * AnnualWorkDays * 24/1000 * ElectricityPrice # $/year
     OpEx_maintenance = 0.025 * CapEx_electrolyzer # $/year
-    OpEx_distill = PriceChart.loc[Product_cathode].at['RefOperatCost'] * (ScaleFlowRate_productLiquid / (1/60)) # $/year
+    OpEx_distill = PriceChart.loc[Product_cathode, 'RefOperatCost'] * (ScaleFlowRate_productLiquid / (1/60)) # $/year
     OpEx_PSA = 0.25 * ElectricityPrice * ScaleFlowRate_productGas * 3600*24 * AnnualWorkDays # $/year
     OpEx_CO2 = CO2Price * ScaleMassRate_inCO2 * TotalPassCO2Eff * 3600*24 * AnnualWorkDays # $/year
     OpEx_H2O = H2OPrice * ScaleMassRate_H2O * 3600*24 * AnnualWorkDays # $/year
@@ -141,13 +141,13 @@ def NPVCal(Case = 'Optimistic', Product_cathode = 'EtOH'):
     NPVChart.fillna(0, inplace=True)
     NPVChart['NetEarning'] = (NPVChart['NetProfit'] - NPVChart['Depreciation']) * (1 - Income_tax)
     NPVChart['CashFlow_Discounted'] = NPVChart['NetEarning'] + NPVChart['Depreciation']
-    NPVChart['CashFlow_Discounted'].iloc[0] = - CapEx_total * (1 + CapEx_workingRatio)
-    NPVChart['CashFlow_Discounted'].iloc[-1] = NPVChart['CashFlow_Discounted'].iloc[-1] + CapEx_total * (SalvageValue + CapEx_workingRatio)
+    NPVChart.loc[NPVChart.index[0], 'CashFlow_Discounted'] = - CapEx_total * (1 + CapEx_workingRatio)
+    NPVChart.loc[NPVChart.index[-1], 'CashFlow_Discounted'] = NPVChart.loc[NPVChart.index[-1], 'CashFlow_Discounted'] + CapEx_total * (SalvageValue + CapEx_workingRatio)
     NPVChart['CashFlow_PV'] = NPVChart['CashFlow_Discounted']/(1+InterestRate)**NPVChart['Year']
     NPVChart['CumCash_PV'] = NPVChart['CashFlow_PV'].cumsum()
 
 
-    return NPVChart['CumCash_PV'].iloc[-1], CapEx_Cost, OpEx_Cost
+    return NPVChart.loc[NPVChart.index[-1], 'CumCash_PV'], CapEx_Cost, OpEx_Cost
 
 
 def OpCost_yield():
