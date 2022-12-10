@@ -174,14 +174,15 @@ def CapCost_yield():
         yield CapCost
 CapEx_df = pd.concat(CapCost_yield(), axis=1, keys=['Ethanol', 'Formic Acid', 'Methanol', 'n-Propanol', 'Carbon Monoxide', 'Ethylene', 'Methane'])
 
+CaseCustom()
 NPV_dic = {}
 def NPV_yield():
-    for cases in ['Current', 'Optimistic', 'Better', 'Worse']:
+    for cases in ['Current', 'Optimistic', 'Better', 'Worse', 'Custom']:
         for products in ['EtOH', 'HCOOH', 'MeOH', 'PrOH', 'CO', 'C2H4', 'CH4']:
             NPV_Value, _, _ = NPVCal(cases, products)
             NPV_dic[products] = NPV_Value
         NPV_Series = pd.Series(NPV_dic)
         yield NPV_Series
-NPV_df = pd.concat(NPV_yield(), axis=1, keys=['Current', 'Optimistic', 'Better', 'Worse'])
+NPV_df = pd.concat(NPV_yield(), axis=1, keys=['Current', 'Optimistic', 'Better', 'Worse', 'Custom'])
 NPV_df.index = ['Ethanol', 'Formic Acid', 'Methanol', 'n-Propanol', 'Carbon Monoxide', 'Ethylene', 'Methane']
 

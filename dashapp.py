@@ -95,12 +95,29 @@ Slider_Conversion = dcc.Slider(0, 100, 10,
                id='input_Conversion'
                )
 
+items = [
+    dbc.DropdownMenuItem('All Products', id='All'),
+    dbc.DropdownMenuItem('Ethanol', id='EtOH'),
+    dbc.DropdownMenuItem('Formic Acid', id='HCOOH'),
+    dbc.DropdownMenuItem('Methanol', id='MeOH'),
+    dbc.DropdownMenuItem('n-Propanol', id='PrOH'),
+    dbc.DropdownMenuItem('Carbon Monoxide', id='CO'),
+    dbc.DropdownMenuItem('Ethylene', id='C2H4'),
+    dbc.DropdownMenuItem('Methane',id='CH4'),
+]
+
+dropdown = dbc.DropdownMenu(
+    label='Products',
+    children=items
+)
+
 tabs = dbc.Tabs(
     [
         dbc.Tab(fig_overview, label="Overview"),
         dbc.Tab(fig_NPV, label="Optimistic vs Current"),
         dbc.Tab(
             [
+                dropdown,
                 Slider_ElectricityPrice,
                 Slider_CurrentDensity,
                 Slider_CellVoltage,
@@ -109,7 +126,8 @@ tabs = dbc.Tabs(
                 Slider_SellPriceRate,
                 Slider_Selectivity,
                 Slider_Conversion,
-                html.Div(id='slider-output-container')
+                html.Div(id='slider-output-container'),
+                fig_Custom
             ],
             label="Customize Sensitivity"
         ),
